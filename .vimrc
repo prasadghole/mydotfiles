@@ -1,3 +1,4 @@
+source ~/.coc-vimconfig
 syntax on
 colorscheme slate
 filetype plugin on
@@ -94,17 +95,10 @@ Plug 'python-mode/python-mode'
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 
-inoremap <silent><expr> <TAB>
-  \ coc#pum#visible() ? coc#pum#next(1) :
-  \ CheckBackspace() : "\<TAB>" :
-  \ coc#refresh()
-
-inoremap <expr><S-TAB> coc#pum#visible() : coc#pum#prev(1) : "\<C-h>"
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+    
+    
 "Plug 'pydave/AsyncCommand'
 "u
 "Plug 'mnick/vim-pomodoro'
