@@ -38,6 +38,7 @@ let g:netrw_altv = 1
 	"autocmd VimEnter * :Vexplore
 "augroup END
 
+let mapleader = " "
 "Status line
 set statusline=\ %f
 
@@ -89,13 +90,23 @@ Plug 'vim-scripts/c.vim'
 Plug 'python-mode/python-mode'
 
 "Javascript
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#pum#next(1) :
+  \ CheckBackspace() : "\<TAB>" :
+  \ coc#refresh()
 
+inoremap <expr><S-TAB> coc#pum#visible() : coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'pydave/AsyncCommand'
+"u
 "Plug 'mnick/vim-pomodoro'
 call plug#end()
 "need to check how to integrate with airline 
