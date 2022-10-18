@@ -68,7 +68,6 @@ This function should only modify configuration layer settings."
      pandoc
      treemacs
      imenu-list
-     evil-cleverparens
      themes-megapack)
 
 
@@ -555,7 +554,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
- '(org-agenda-files '("c:/msys64/home/pghole/Notes.org"))
+ '(org-agenda-files
+   '("c:/msys64/home/pghole/Agenda.org" "c:/msys64/home/pghole/Notes.org"))
  '(org-pomodoro-ticking-sound
    "C:\\msys64\\home\\pghole\\.emacs.d\\elpa\\27.2\\develop\\org-pomodoro-20220318.1618\\resources\\tick.wav")
  '(org-pomodoro-ticking-sound-states '(:pomodoro :short-break :long-break))
