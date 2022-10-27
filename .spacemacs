@@ -50,7 +50,8 @@ This function should only modify configuration layer settings."
      helm
      javascript
      tern
-     ;; lsp
+     lsp
+     clojure
      helm
      markdown
      multiple-cursors
@@ -58,7 +59,9 @@ This function should only modify configuration layer settings."
           org-enable-reveal-js-support t
           org-enable-hugo-support t
           org-enable-reveal-js-support t
-          org-enable-roam-protocol t)
+          org-enable-org-journal-support t
+          org-superstar-special-todo-items t
+          org-enable-roam-support t)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -68,6 +71,9 @@ This function should only modify configuration layer settings."
      pandoc
      treemacs
      imenu-list
+     eww
+     common-lisp
+     command-log
      themes-megapack)
 
 
@@ -533,16 +539,45 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+(setq inferior-lisp-program "D:/archive/installers/lispstick/Steel\ Bank\ Common\ Lisp/1.1.12/")
 (setq org-reveal-root "")
 (setq org-re-reveal-revealjs-version "3.0.0")
 (yas-global-mode 1)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq dotspacemacs-startup-buffer-show-icons t)
+(setq org-journal-dir "c:/msys64/home/pghole/org/journal/")
+(setq org-journal-file-format "%Y-%m-%d")
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/todo/tasks/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/todo/tasks/refile.org")
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/todo/tasks/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/todo/tasks/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file "~/todo/tasks/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("m" "Meeting" entry (file "~/todo/tasks/refile.org")
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file "~/todo/tasks/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ;; bits notes 
+              ("i" "Info ret notes" entry (file "~/todo/tasks/ir.org")
+               "* Inforet %? :Inforet:\n%U" :clock-in t :clock-resume t)
+              ("d" "DWH notes" entry (file "~/todo/tasks/dwh.org")
+               "* DWH %? :DWH:\n%U" :clock-in t :clock-resume t)
+              ("c" "CC notes" entry (file "~/todo/tasks/cc.org")
+               "* CC %? :CC:\n%U" :clock-in t :clock-resume t)
+              ("f" "ST notes" entry (file "~/todo/tasks/st.org")
+               "* SFTT %? :SFTT:\n%U" :clock-in t :clock-resume t)
+              ;; bits notes 
+              ("h" "Habit" entry (file "~/todo/tasks/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 )
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -555,12 +590,10 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
  '(org-agenda-files
-   '("c:/msys64/home/pghole/Agenda.org" "c:/msys64/home/pghole/Notes.org"))
- '(org-pomodoro-ticking-sound
-   "C:\\msys64\\home\\pghole\\.emacs.d\\elpa\\27.2\\develop\\org-pomodoro-20220318.1618\\resources\\tick.wav")
- '(org-pomodoro-ticking-sound-states '(:pomodoro :short-break :long-break))
+   '("c:/msys64/home/pghole/Personal.org" "c:/Users/pghole/AppData/Roaming/todo/tasks/refile.org" "c:/msys64/home/pghole/Agenda.org" "c:/msys64/home/pghole/Notes.org"))
  '(package-selected-packages
-   '(packed list-utils package-lint flycheck-ycmd gendoxy git-gutter-fringe fringe-helper minimal-theme sound-wav cargo flycheck-rust racer ron-mode rust-mode toml-mode blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope lsp-pyright lsp-python-ms stickyfunc-enhance xcscope counsel-gtags dap-mode lsp-docker lsp-treemacs bui lsp-mode ggtags helm-gtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern ox-pandoc pandoc-mode flyspell-correct-helm flyspell-correct git-modes helm-pydoc importmagic epc ctable concurrent live-py-mode nose orgit-forge forge yaml ghub closql emacsql-sqlite emacsql treepy pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc yapfify yasnippet web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css counsel swiper ivy company-web web-completion-data company add-node-modules-path treemacs-magit smeargle orgit org-rich-yank org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain magit-svn magit-section magit-gitflow magit-popup magit htmlize helm-org-rifle helm-gitignore helm-git-grep gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit with-editor transient evil-org ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line)))
+   '(command-log-mode keycast cider-eval-sexp-fu clojure-snippets helm-cider cider sesman parseedn clojure-mode parseclj helm-lsp lsp-origami origami lsp-ui common-lisp-snippets auctex org-roam org-jira ox-jira org-journal packed list-utils package-lint flycheck-ycmd gendoxy git-gutter-fringe fringe-helper minimal-theme sound-wav cargo flycheck-rust racer ron-mode rust-mode toml-mode blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope lsp-pyright lsp-python-ms stickyfunc-enhance xcscope counsel-gtags dap-mode lsp-docker lsp-treemacs bui lsp-mode ggtags helm-gtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern ox-pandoc pandoc-mode flyspell-correct-helm flyspell-correct git-modes helm-pydoc importmagic epc ctable concurrent live-py-mode nose orgit-forge forge yaml ghub closql emacsql-sqlite emacsql treepy pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc yapfify yasnippet web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css counsel swiper ivy company-web web-completion-data company add-node-modules-path treemacs-magit smeargle orgit org-rich-yank org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain magit-svn magit-section magit-gitflow magit-popup magit htmlize helm-org-rifle helm-gitignore helm-git-grep gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit with-editor transient evil-org ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+ '(warning-suppress-log-types '((emacs))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
