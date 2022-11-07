@@ -32,14 +32,12 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(rust
-     python
+   '(
      html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
-     c-c++
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-snippets-in-popup t
@@ -48,10 +46,8 @@ This function should only modify configuration layer settings."
      emacs-lisp
      git
      helm
-     javascript
      tern
      lsp
-     clojure
      helm
      markdown
      multiple-cursors
@@ -72,9 +68,10 @@ This function should only modify configuration layer settings."
      treemacs
      imenu-list
      eww
-     common-lisp
      command-log
-     finance 
+     finance
+     (xclipboard :variables
+                 xclipboard-enable-cliphist t)
      themes-megapack)
 
 
@@ -541,7 +538,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-(setq ledger-binary-path "c:/Users/pghole/scoop/apps/hledger/1.27.1/hledger.exe")
 (setq inferior-lisp-program "D:/archive/installers/lispstick/Steel\ Bank\ Common\ Lisp/1.1.12/")
 (setq org-reveal-root "")
 (setq org-re-reveal-revealjs-version "3.0.0")
