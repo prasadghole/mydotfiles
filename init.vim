@@ -5,10 +5,15 @@ set mouse=v
 set hlsearch
 set tabstop=2
 set autoindent
+set guifont="Cascadia Mono" 
+let g:airline_solarize_bg='dark'
 syntax on
 set mouse=a
 " set smartindent
 filetype plugin on
+
+nmap ; :
+noremap ;; ;
 
 call plug#begin("~/.vim/plugged")
 Plug 'dracula/vim'
@@ -17,6 +22,9 @@ Plug 'preservim/nerdcommenter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'windwp/nvim-autopairs'
+Plug 'python-rope/ropevim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " coc for tslinting, auto complete and prettier
 Plug 'neoclide/coc.nvim', {'branch' : 'release'}
 call plug#end()
